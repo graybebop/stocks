@@ -3,53 +3,47 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        return response()->json(User::paginate(15));
+        //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:8',
-        ]);
-
-        $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        return response()->json($user, 201);
+        //
     }
 
-    public function show(User $user)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return response()->json($user);
+        //
     }
 
-    public function update(Request $request, User $user)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $data = $request->validate([
-            'name'  => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id,
-        ]);
-
-        $user->update($data);
-        return response()->json($user);
+        //
     }
 
-    public function destroy(User $user)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
-        $user->delete();
-        return response()->json(['message' => '삭제되었습니다.']);
+        //
     }
 }
