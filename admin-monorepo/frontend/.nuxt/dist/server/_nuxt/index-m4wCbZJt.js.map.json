@@ -1,0 +1,1 @@
+{"file":"index-m4wCbZJt.js","mappings":";;;;;;;;;;;;;;;;;;;;;AACA,eAAW,YAAY;;;;;;;;;;;","names":[],"sources":["../../../../pages/index.vue"],"sourcesContent":["<script setup lang=\"ts\">\nnavigateTo('/dashboard')\n</script>\n"],"version":3}
