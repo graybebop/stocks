@@ -1,0 +1,9 @@
+{
+  "_hash": "Kwc7Cm05m8C-3y7DvGBu_PZqqtPfsLr2PKAeF5e2Wjo",
+  "project": {
+    "rootDir": "/Users/graybebop/Documents/프로젝트/05-Vue프로젝트/laravel-stock/admin-monorepo/frontend"
+  },
+  "versions": {
+    "nuxt": "3.21.6"
+  }
+}
