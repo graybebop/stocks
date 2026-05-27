@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "name": "admin-monorepo",
+      "path": "admin-monorepo"
+    },
+    {
+      "name": "stock-service/backend (Laravel)",
+      "path": "stock-service/backend"
+    },
+    {
+      "name": "stock-service/frontend (Nuxt3)",
+      "path": "stock-service/frontend"
+    }
+  ],
+  "settings": {
+    "intelephense.environment.phpVersion": "8.4.0"
+  }
+}
