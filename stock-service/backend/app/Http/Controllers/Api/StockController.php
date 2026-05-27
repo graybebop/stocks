@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\NaverFinanceCrawler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
@@ -18,7 +17,7 @@ class StockController extends Controller
     {
         $query = trim($request->query('q', ''));
 
-        if (strlen($query) < 1) {
+        if (\strlen($query) < 1) {
             return response()->json(['message' => '검색어를 입력해주세요.'], 422);
         }
 
@@ -76,6 +75,40 @@ class StockController extends Controller
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 503);
         }
+    }
+
+    // GET /api/stock/ranking?type=volume|rise|fall|marcap
+    public function ranking(Request $request): JsonResponse
+    {
+        $type = $request->query('type', 'volume');
+        if (!\in_array($type, ['volume', 'rise', 'fall', 'marcap'])) {
+            $type = 'volume';
+        }
+
+        $orderCol = match ($type) {
+            'rise'   => ['change_rate',  'desc'],
+            'fall'   => ['change_rate',  'asc'],
+            'marcap' => ['market_cap',   'desc'],
+            default  => ['volume',       'desc'],
+        };
+
+        $query = DB::table('stocks')
+            ->whereNotNull($orderCol[0])
+            ->whereNotNull('price');
+
+        // 하락은 실제 하락 종목만
+        if ($type === 'fall') {
+            $query->where('change_rate', '<', 0);
+        } else {
+            $query->where($orderCol[0], '>', 0);
+        }
+
+        $rows = $query
+            ->orderBy($orderCol[0], $orderCol[1])
+            ->limit(20)
+            ->get(['code', 'name', 'market', 'price', 'change_rate', 'change_amount', 'volume', 'market_cap', 'price_updated_at']);
+
+        return response()->json($rows);
     }
 
     // GET /api/stock/{code}/chart?timeframe=day|week|month

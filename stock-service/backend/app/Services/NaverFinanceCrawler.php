@@ -99,6 +99,14 @@ class NaverFinanceCrawler
                 }
             }
 
+            // 시가총액 (억원) — em#_market_sum 텍스트에서 숫자만 추출
+            $marketCapNode = $crawler->filter('#_market_sum');
+            $marketCap     = null;
+            if ($marketCapNode->count() > 0) {
+                $rawCap    = preg_replace('/[^0-9,]/', '', $marketCapNode->text(''));
+                $marketCap = $rawCap !== '' ? (int) str_replace(',', '', $rawCap) : null;
+            }
+
             return [
                 'code'         => $code,
                 'name'         => $name,
@@ -110,6 +118,7 @@ class NaverFinanceCrawler
                 'low'          => $low,
                 'volume'       => $volume,
                 'prevClose'    => $prevClose,
+                'marketCap'    => $marketCap,
                 'updatedAt'    => now()->toIso8601String(),
             ];
         } catch (RequestException $e) {
